@@ -1,12 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#070a0f;--panel:rgba(20,27,38,.72);--line:rgba(120,150,190,.14);
+    --ink:#eef4fb;--mut:#8ea2bd;--grn:#36e0a0;--red:#ff6b6b;--acc:#f7c948;--acc2:#7aa2ff;
+    --glow:0 0 0 1px rgba(122,162,255,.15),0 20px 60px -20px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--ink);overflow-x:hidden;
+    font:15px/1.55 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden}
+  .aurora::before,.aurora::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
+    filter:blur(90px);opacity:.35;mix-blend-mode:screen;animation:float 22s ease-in-out infinite}
+  .aurora::before{background:radial-gradient(circle,#2d6cff,transparent 60%);top:-15%;left:-10%}
+  .aurora::after{background:radial-gradient(circle,#f7c948,transparent 60%);bottom:-20%;right:-12%;animation-delay:-11s}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,5vh) scale(1.15)}}
+  .grid-overlay{position:fixed;inset:0;z-index:-1;
+    background-image:linear-gradient(rgba(122,162,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(122,162,255,.04) 1px,transparent 1px);
+    background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 0%,#000,transparent 75%)}
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 20px 90px}
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:46px;height:46px;border-radius:13px;position:relative;transform-style:preserve-3d;animation:spin3d 9s linear infinite;
+    background:linear-gradient(135deg,#f7c948,#ff8a3d);box-shadow:0 8px 30px -6px rgba(247,201,72,.6)}
+  .logo::after{content:"▲";position:absolute;inset:0;display:grid;place-items:center;color:#1a1300;font-size:20px;font-weight:900}
+  @keyframes spin3d{0%{transform:rotateY(0) rotateX(8deg)}100%{transform:rotateY(360deg) rotateX(8deg)}}
+  h1{font-size:25px;margin:0;font-weight:800;letter-spacing:-.5px}
+  h1 b{background:linear-gradient(90deg,#f7c948,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--mut);font-size:12.5px}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--mut);
+    padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);backdrop-filter:blur(12px)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--grn);box-shadow:0 0 0 0 rgba(54,224,160,.6);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(54,224,160,0)}100%{box-shadow:0 0 0 0 rgba(54,224,160,0)}}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;perspective:1000px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;backdrop-filter:blur(16px);
+    box-shadow:var(--glow);position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s;transform-style:preserve-3d}
+  .stat:hover{transform:translateY(-4px) rotateX(6deg);box-shadow:0 0 0 1px rgba(122,162,255,.3),0 30px 60px -22px rgba(0,0,0,.9)}
+  .stat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--acc2),transparent);opacity:.5}
+  .stat .lbl{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+  .stat .val{font-size:27px;font-weight:800;margin-top:6px;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px;backdrop-filter:blur(18px);box-shadow:var(--glow)}
+  .card h2{font-size:12px;margin:0 0 16px;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;display:flex;align-items:center;gap:8px}
+  .card h2::before{content:"";width:14px;height:2px;background:var(--acc)}
+  label{display:block;font-size:11px;color:var(--mut);margin:11px 0 5px;letter-spacing:.4px;text-transform:uppercase}
+  input,select,textarea{width:100%;background:rgba(8,12,18,.6);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:10px 11px;font-size:14px;font-family:inherit;transition:border .2s,box-shadow .2s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc2);box-shadow:0 0 0 3px rgba(122,162,255,.18)}
+  textarea{resize:vertical;min-height:54px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .hint{font-size:11px;color:var(--acc2);margin-top:8px;min-height:15px;font-variant-numeric:tabular-nums}
+  button.add{width:100%;margin-top:18px;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;
+    color:#1a1300;background:linear-gradient(135deg,#f7c948,#ff9d3d);letter-spacing:.3px;position:relative;overflow:hidden;
+    box-shadow:0 10px 30px -8px rgba(247,201,72,.5);transition:transform .15s}
+  button.add:hover{transform:translateY(-2px)}
+  button.add::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sheen 3.5s infinite}
+  @keyframes sheen{0%,60%{left:-60%}100%{left:130%}}
+  button.add:disabled{opacity:.6;cursor:wait}
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td{text-align:right;padding:11px 12px;white-space:nowrap}
+  th{color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--line)}
+  td{border-bottom:1px solid rgba(120,150,190,.07)}
+  th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+  tbody tr{animation:rowin .45s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rowin{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+  tbody tr:hover{background:rgba(122,162,255,.06)}
+  .pos{color:var(--grn)} .neg{color:var(--red)}
+  .pill{font-size:10.5px;padding:3px 9px;border-radius:999px;font-weight:700}
+  .buy{background:rgba(54,224,160,.14);color:var(--grn)} .sell{background:rgba(255,107,107,.14);color:var(--red)}
+  .tag{font-size:10px;color:var(--mut);background:rgba(122,162,255,.1);padding:2px 7px;border-radius:6px}
+  .del{background:none;border:none;color:var(--mut);cursor:pointer;font-size:14px;transition:color .2s,transform .2s}
+  .del:hover{color:var(--red);transform:scale(1.25)}
+  .empty{color:var(--mut);text-align:center;padding:40px}
+  @media(max-width:860px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <p>My site is live on GitHub Pages.</p>
+<div class="aurora"></div>
+<div class="grid-overlay"></div>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo"></div>
+      <div><h1>Trading <b>Journal</b></h1><div class="sub">Multi-instrument P/L · synced to your Google Sheet</div></div>
+    </div>
+    <div class="live"><span class="dot"></span> Live · auto-saved</div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="layout">
+    <div class="card">
+      <h2>Log a trade</h2>
+      <label>Date</label><input type="date" id="date">
+      <div class="row2">
+        <div><label>Pair</label><input id="pair" placeholder="XAUUSD"></div>
+        <div><label>Instrument</label>
+          <select id="instrument" onchange="preview()">
+            <option value="Forex">Forex</option><option value="Forex JPY">Forex (JPY)</option>
+            <option value="XAUUSD">Gold · XAUUSD</option><option value="XAGUSD">Silver · XAGUSD</option>
+            <option value="Oil">Oil · US/UK</option><option value="Index">Cash Index</option>
+            <option value="Stock">Stock / Crypto</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div><label>Session</label>
+          <select id="session"><option>Sydney</option><option>Tokyo</option><option>London</option><option>New York</option></select>
+        </div>
+        <div><label>Direction</label><select id="direction" onchange="preview()"><option>Buy</option><option>Sell</option></select></div>
+      </div>
+      <div class="row2">
+        <div><label id="lotLbl">Lot size</label><input type="number" id="lots" step="any" oninput="preview()" placeholder="0.01"></div>
+        <div><label>Entry price</label><input type="number" id="entry" step="any" oninput="preview()" placeholder="4200"></div>
+      </div>
+      <div class="row2">
+        <div><label>Stop loss</label><input type="number" id="sl" step="any" oninput="preview()" placeholder="4190"></div>
+        <div><label>Take profit</label><input type="number" id="tp" step="any" oninput="preview()" placeholder="4220"></div>
+      </div>
+      <div class="hint" id="hint"></div>
+      <label>Notes</label><textarea id="notes" placeholder="Setup, emotion, what went right or wrong?"></textarea>
+      <button class="add" id="saveBtn" onclick="save()">Add trade</button>
+    </div>
+    <div class="card">
+      <h2>History</h2>
+      <div class="tablewrap"><table>
+        <thead><tr>
+          <th>Seq</th><th>Date</th><th>Pair</th><th>Session</th><th>Dir</th><th>Lots</th>
+          <th>Entry</th><th>SL</th><th>TP</th><th>P&L</th><th>R:R</th><th>Result</th><th></th>
+        </tr></thead><tbody id="rows"></tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+<script>
+  var trades=[];
+  var SPECS={'Forex':{c:100000,p:0.0001},'Forex JPY':{c:1000,p:0.01},'XAUUSD':{c:100,p:1},
+    'XAGUSD':{c:5000,p:0.01},'Oil':{c:1000,p:0.01},'Index':{c:1,p:1},'Stock':{c:1,p:0.01}};
+  function val(id){return document.getElementById(id).value.trim();}
+  function money(n){if(n===''||n===null||isNaN(n))return '—';
+    return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function calc(inst,dir,lots,entry,tp,sl){
+    var s=SPECS[inst]||SPECS.Forex,d=dir==='Sell'?-1:1,pl='',rr='';
+    if(tp&&entry&&lots){pl=Math.round((tp-entry)*d*lots*s.c*100)/100;}
+    if(sl&&tp&&entry){var risk=Math.abs(entry-sl),rew=Math.abs(tp-entry);if(risk>0)rr='1:'+(Math.round(rew/risk*100)/100);}
+    return{pl:pl,rr:rr};
+  }
+  function preview(){
+    document.getElementById('lotLbl').textContent=val('instrument')==='Stock'?'Shares':'Lot size';
+    var c=calc(val('instrument'),val('direction'),+val('lots'),+val('entry'),+val('tp'),+val('sl'));
+    var h=document.getElementById('hint');
+    if(c.pl===''){h.textContent='';return;}
+    h.innerHTML='Projected: <span class="'+(c.pl>=0?'pos':'neg')+'">'+money(c.pl)+'</span>'+(c.rr?' · R:R '+c.rr:'');
+  }
+  function render(){
+    var rows=document.getElementById('rows');
+    if(!trades.length){rows.innerHTML='<tr><td colspan="13" class="empty">No trades yet. Log your first one.</td></tr>';}
+    else{rows.innerHTML=trades.map(function(t){
+      var cls=t.pl===''?'':(t.pl>=0?'pos':'neg'),dc=t.direction==='Sell'?'sell':'buy';
+      return '<tr><td>'+t.seq+'</td><td>'+t.date+'</td>'
+        +'<td><strong>'+(t.pair||'')+'</strong></td><td><span class="tag">'+(t.session||'')+'</span></td>'
+        +'<td><span class="pill '+dc+'">'+t.direction+'</span></td>'
+        +'<td>'+t.lots+'</td><td>'+t.entry+'</td><td>'+(t.sl||'—')+'</td><td>'+(t.tp||'—')+'</td>'
+        +'<td class="'+cls+'"><strong>'+money(t.pl)+'</strong></td><td>'+(t.rr||'—')+'</td>'
+        +'<td>'+(t.results||'—')+'</td>'
+        +'<td><button class="del" onclick="del(\''+t.id+'\')">✕</button></td></tr>';
+    }).join('');}
+    renderStats();
+  }
+  function renderStats(){
+    var cl=trades.filter(function(t){return t.pl!==''&&!isNaN(t.pl);});
+    var net=cl.reduce(function(s,t){return s+ +t.pl;},0);
+    var wins=cl.filter(function(t){return +t.pl>0;}).length;
+    var wr=cl.length?Math.round(wins/cl.length*100):0;
+    var gw=cl.filter(function(t){return t.pl>0;}).reduce(function(s,t){return s+ +t.pl;},0);
+    var gl=Math.abs(cl.filter(function(t){return t.pl<0;}).reduce(function(s,t){return s+ +t.pl;},0));
+    var pf=gl?(gw/gl).toFixed(2):(gw?'∞':'—');
+    document.getElementById('stats').innerHTML=
+      st('Net P/L','<span class="'+(net>=0?'pos':'neg')+'">'+money(net)+'</span>')+st('Trades',trades.length)
+      +st('Win rate',wr+'%')+st('Profit factor',pf);
+  }
+  function st(l,v){return '<div class="stat"><div class="lbl">'+l+'</div><div class="val">'+v+'</div></div>';}
+  function save(){
+    var btn=document.getElementById('saveBtn');
+    var t={date:val('date'),pair:val('pair').toUpperCase(),instrument:val('instrument'),session:val('session'),
+      direction:val('direction'),lots:val('lots'),entry:val('entry'),sl:val('sl'),tp:val('tp'),notes:val('notes')};
+    if(!t.date||!t.pair||!t.lots||!t.entry){alert('Date, pair, lot size and entry are required.');return;}
+    btn.disabled=true;btn.textContent='Saving…';
+    google.script.run.withSuccessHandler(function(d){trades=d;render();clear();
+      btn.disabled=false;btn.textContent='Add trade';}).withFailureHandler(function(e){
+      alert('Error: '+e.message);btn.disabled=false;btn.textContent='Add trade';}).addTrade(t);
+  }
+  function del(id){if(!confirm('Delete this trade?'))return;
+    google.script.run.withSuccessHandler(function(d){trades=d;render();}).deleteTrade(id);}
+  function clear(){['pair','lots','entry','sl','tp','notes'].forEach(function(id){document.getElementById(id).value='';});preview();}
+  document.getElementById('date').valueAsDate=new Date();
+  google.script.run.withSuccessHandler(function(d){trades=d;render();}).getTrades();
+</script>
 </body>
+</html>
+  </body>
 </html>
